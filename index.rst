@@ -16,7 +16,6 @@
   :name: _era_postgres
   :hidden:
 
-  postgress/postgress
   postgress/era_provision_postgresdb/era_provision_postgresdb
   postgress/era_clone_postgresdb/era_clone_postgresdb
   postgress/era_rest_api/era_rest_api
@@ -28,7 +27,6 @@
   :name: _era_oracle
   :hidden:
 
-  oracle/oracle
   oracle/deploy_oracle/deploy_oracle
   oracle/deploy_oracle_era/deploy_oracle_era
   oracle/patching_oracle/patching_oracle
@@ -40,7 +38,6 @@
   :name: _era_mssql
   :hidden:
 
-  mssql/mssql
   mssql/deploy_mssql/deploy_mssql
   mssql/admin_mssqldb/admin_mssqldb
   mssql/deploy_mssql_era/deploy_mssql_era
