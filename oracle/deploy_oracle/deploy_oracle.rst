@@ -105,7 +105,7 @@ In this exercise, you will register your April PSU VM and register it as version
 #. Click **+ Register** and fill out the following **Database Server** fields:
 
    - **Engine** - Oracle
-   - **IP Address or Name of VM** - *UserXX*\ **-MSSQLSourceVM**
+   - **IP Address or Name of VM** - *UserXX*\ **-Oracle19cSource**
    - **Database Version** - 19.0.0.0
    - **Era Drive User** - oracle
    - **Oracle Database Home** - /u02/app/oracle/product/19.0.0/dbhome_1
@@ -137,7 +137,7 @@ In this exercise, you will register your April PSU VM and register it as version
    - **Type** - Single Instance
    - **Name** - *Initials*\ _ORACLE_19C
    - **Description** - (Optional)
-   - **Database Server** - Select your registered *UserXX*\ **-MSSQLSourceVM**
+   - **Database Server** - Select your registered *UserXX*\ **-Oracle19cSource**
 
    .. figure:: images/3.png
 
@@ -156,7 +156,7 @@ Register Your Database
 
    - **Engine** - ORACLE
    - **Database is on a Server that is:** - Registered
-   - **Registered Database Servers** - Select your registered *UserXX*\ **-MSSQLSourceVM**
+   - **Registered Database Servers** - Select your registered *UserXX*\ **-Oracle19cSource**
 
    .. figure:: images/12.png
 
