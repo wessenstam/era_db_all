@@ -28,7 +28,7 @@ This VM is running Oracle 19c with April PSU patches applied.
 #. Fill out the following fields:
 
    - **Number Of Clones** - 1
-   - **Name** - *UserXX*\ **-MSSQLSourceVM-Patched**
+   - **Name** - *UserXX*\ **-Oracle19cSource-Patched**
    - **Description** - (Optional) Description for your VM.
    - **vCPU(s)** - 2
    - **Number of Cores per vCPU** - 1
