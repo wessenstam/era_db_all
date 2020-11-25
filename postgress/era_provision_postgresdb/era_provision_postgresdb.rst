@@ -41,7 +41,7 @@ Era is distributed as a virtual appliance that can be installed on either AHV or
 #. Login using the following credentials:
 
    - **Username** - admin
-   - **Password** - *SAME AS YOUR ADMIN PASSWORD*
+   - **Password** - *SAME AS YOUR ADMIN PASSWORD FOR THE CLUSTER*
 
 #. From the **Dashboard** dropdown, select **Administration**.
 
