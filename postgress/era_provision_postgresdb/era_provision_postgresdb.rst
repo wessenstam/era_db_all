@@ -32,7 +32,7 @@ Era is distributed as a virtual appliance that can be installed on either AHV or
 
 .. note::
 
-   If you're interested, instructions for the brief installation of the Era appliance can be found `here <https://portal.nutanix.com/#/page/docs/details?targetId=Nutanix-Era-User-Guide-v12:era-era-installing-on-ahv-t.html>`_.
+   If you're interested, instructions for the brief installation of the Era appliance can be found `here <https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Era-User-Guide-v2_0:era-era-installing-on-ahv-t.html>`_.
 
 #. In **Prism Central > VMs > List**, identify the IP address assigned to the **EraServer-\*** VM using the **IP Addresses** column.
 
@@ -47,7 +47,7 @@ Era is distributed as a virtual appliance that can be installed on either AHV or
 
 #. Under **Cluster Details**, note that Era has already been configured for your assigned cluster.
 
-   .. figure:: images/6.png
+   .. figure:: images/6a.png
 
 #. Select **Era Resources** from the left-hand menu.
 
@@ -71,35 +71,16 @@ Era is distributed as a virtual appliance that can be installed on either AHV or
 
    .. figure:: images/3f2.png
 
-#. Review the configured Networks. If no Networks show under **VLANs Available for Network Profiles**, click **Add**. Select **Secondary** VLAN and click **Add**.
-
-   .. note::
-
-      Leave **Manage IP Address Pool** unchecked, as we will be leveraging the cluster's IPAM to manage addresses
-
-   .. figure:: images/era_networks_001.png
+#. Review the configured Networks. The available network profiles have been created by the staging script that has been used.
+   
+   .. figure:: images/5.png
 
 #. From the dropdown menu, select **SLAs**.
 
-   .. figure:: images/7a.png
+   .. figure:: images/7.png
 
    Era has five built-in SLAs (Gold, Silver, Bronze, Zero, and Brass). SLAs control how the database server is backed up. This can be with a combination of Continuous Protection, Daily, Weekly Monthly and Quarterly protection intervals.
 
-#. From the dropdown menu, select **Profiles**.
-
-   Profiles pre-define resources and configurations, making it simple to consistently provision environments and reduce configuration sprawl. For example, Compute Profiles specifiy the size of the database server, including details such as vCPUs, cores per vCPU, and memory.
-
-#. If you do not see any networks defined under **Network**, click **+ Create**.
-
-   .. figure:: images/8.png
-
-#. Fill out the following fields and click **Create**:
-
-   - **Engine** - PostgreSQL
-   - **Name** - Primary-PGSQL-NETWORK
-   - **Public Service VLAN** - Secondary
-
-   .. figure:: images/3f3.png
 
 Provisioning a PostgreSQL Database
 ++++++++++++++++++++++++++++++++++
@@ -108,18 +89,17 @@ You've completed all the one time operations required to be able to provision an
 
 #. In **Era**, select **Databases** from the dropdown menu and **Sources** from the lefthand menu.
 
-#. Click **+ Provision > Single Node Database**.
+#. Click **+ Provision > PostgressSQL -> Instance**.
 
 #. In the **Provision a Database** wizard, fill out the following fields to configure the Database Server:
 
-   - **Engine** - PostgresSQL
    - **Database Server** - Select **Create New Server**
    - **Database Server Name** - *Initials*\ -PostgresSQL
    - **Description** - (Optional)
+   - **Nutanix Cluster** - EraCluster (pre-selected)
    - **Software Profile** - POSTGRES_10.4_OOB
    - **Compute Profile** - *Initials*\ -Lab
    - **Network Profile** - Primary-PGSQL-NETWORK
-   - **Database Time Zone** - America/Los_Angeles
    - **SSH Public Key for Node Access** - Select **Text**
 
    .. code-block:: text
@@ -128,9 +108,9 @@ You've completed all the one time operations required to be able to provision an
 
    .. note::
 
-     The above SSH public key is provided as an example and is configured as an authorized key for the operating system provisioned by Era. In a non-lab setting you would create your own SSH private/public keypair and provide the public key during this step.
+     After having the key copied, make sure that it doesn't have an extra blank line in the textfield. The cursor needs to be at the the last character as shown in the example screenshot below! The above SSH public key is provided as an example and is configured as an authorized key for the operating system provisioned by Era. In a non-lab setting you would create your own SSH private/public keypair and provide the public key during this step.
 
-   .. figure:: images/4d2.png
+   .. figure:: images/4d3.png
 
 #. Click **Next**.
 
@@ -138,37 +118,39 @@ You've completed all the one time operations required to be able to provision an
 
    - **Database Name** - *Initials*\_LabDB
    - **Description** - (Optional) Description
-   - **POSTGRES Password** - nutanix/4u
-   - **Database Parameter Profile** - DEFAULT_POSTGRES_PARAMS
    - **Listener Port** - 5432
    - **Size (GiB)** - 200
+   - **Name of the Initial Database** - *Initials*\_labdb
+   - **POSTGRES Password** - nutanix/4u
+   - **Database Parameter Profile** - DEFAULT_POSTGRES_PARAMS
+   
 
    .. note::
 
      Era also offers to ability to run scripts or commands both before and after database creation . These can be used to further customize an environment based on specific enterprise needs.
 
-   .. figure:: images/4e2.png
+   .. figure:: images/4e3.png
 
 #. Click **Next**.
 
 #. Fill out the following **Time Machine** fields:
 
-   - **Name** - *Initials*\_LabDB_tm
+   - **Name** - *Initials*\_LabDB_TM (filled by default)
    - **Description** - (Optional) Description
    - **SLA** - DEFAULT_OOB_GOLD_SLA
    - **Schedule** - Default
 
-   .. figure:: images/4f2.png
+   .. figure:: images/4f3.png
+
+   .. danger::
+
+     Be 100% sure you have selected the GOLD SLA! Otherwise in the next part of the lab you will end up in an issue!
 
 #. Click **Provision**.
 
 #. Select **Operations** from the dropdown menu to monitor the provisioning. This process should take approximately 5 minutes.
 
-   .. note::
-
-     All operations within Era have unique IDs are fully visible for logging/auditing.
-
-   .. figure:: images/4g2.png
+   .. figure:: images/4g3.png
 
 #. Upon completion, select **Dashboard** from the drop down menu and note your new **Source Database**.
 
@@ -191,9 +173,9 @@ Now that Era has successfully provisioned a database instance, you will connect 
 
 #. Note the IP Address of your **Database Server**.
 
-   .. figure:: images/5b.png
+   .. figure:: images/5c1.png
 
-#. Using *Initials*\ **-WinToolsVM**, open **pgAdmin**.
+#. Using *Initials*\ **-WinToolsVM**, open **pgAdmin** via the **Tools** map on the desktop.
 
    .. note::
 

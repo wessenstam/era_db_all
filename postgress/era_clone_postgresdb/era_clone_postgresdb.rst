@@ -18,7 +18,7 @@ Cloning Your PostgreSQL Source
 
 Now that you have created a source database, you can easily clone it using Era Time Machine. Database clones are helpful for development and testing purposes, allowing non-production environments to utilize product data without impacting production operations. Era clones utilize Nutanix-native copy-on-write cloning technology, allowing for zero-byte database clones. This space efficiency can significantly lower storage costs for environments supporting large numbers of database clones.
 
-#. In **Era**, select **Time Machines**, select the Time Machine instance for your source database (*Initials*\_LabDB_tm).
+#. In **Era**, select **Time Machines**, select the Time Machine instance for your source database (*Initials*\_LabDB_TM) by selecting the Radio Button in front of the name of your instance.
 
    .. figure:: images/16a2.png
 
@@ -28,17 +28,17 @@ Now that you have created a source database, you can easily clone it using Era T
 
 #. Click **Create**.
 
-#. Select **Operations** from the dropdown menu to monitor the provisioning. This process should take approximately 5 minutes.
+#. Select **Operations** to monitor the creation of the snapshot. This process should take approximately 2-3 minutes.
 
-#. After the snapshot job completes, select the Time Machine instance for your source database (*Initials*\_LabDB_tm) in **Era > Time Machines** and click **Actions** > **Clone Database**.
+#. After the snapshot job completes, select the Time Machine instance for your source database (*Initials*\_LabDB_TM) in **Era > Time Machines** and click **Actions** > **Create a Clone of the PostgresSQLInstance**.
 
-#. On the **Time** tab, select **Snapshot > First**.
+#. On the **Time**/Snapshot tab, select **Snapshot > First**. Leave the Nutanix Cluster as is.
 
    .. note::
 
      Without creating manual snapshots, Era also offers the ability to clone a database based on **Point in Time** increments including Continuous (Every Second), Daily, Weekly, Monthly, or Quarterly. Availability is controlled by the SLA of the source.
 
-   .. figure:: images/19a2.png
+   .. figure:: images/19a3.png
 
 #. Click **Next**.
 
@@ -54,7 +54,7 @@ Now that you have created a source database, you can easily clone it using Era T
 
      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoQRdEfm8ZJNGlYLQ2iw08eVk/Wyj0zl3M5KyqKmBTpUaS1uxj0K05HMHaUNP+AeJ63Qa2hI1RJHBJOnV7Dx28/yN7ymQpvO1jWejv/AT/yasC9ayiIT1rCrpHvEDXH9ee0NZ3Dtv91R+8kDEQaUfJLYa5X97+jPMVFC7fWK5PqZRzx+N0bh1izSf8PW0snk3t13DYovHFtlTpzVaYRec/XfgHF9j0032vQDK3svfQqCVzT02NXeEyksLbRfGJwl3UsA1ujQdPgalil0RyyWzCMIabVofz+Czq4zFDFjX+ZPQKZr94/h/6RMBRyWFY5CsUVvw8f+Rq6kW+VTYMvvkv
 
-   .. figure:: images/20a2.png
+   .. figure:: images/20a3.png
 
 #. Click **Next**.
 
@@ -65,7 +65,7 @@ Now that you have created a source database, you can easily clone it using Era T
    - **Password** - nutanix/4u
    - **Database Parameter Profile** - DEFAULT_POSTGRES_PARAMS
 
-   .. figure:: images/21a2.png
+   .. figure:: images/21a3.png
 
 #. Click **Clone**.
 
@@ -75,7 +75,7 @@ Now that you have created a source database, you can easily clone it using Era T
 
    .. figure:: images/21b.png
 
-#. Following the completion of the clone operation, you can connect to the clone instance as described in the previous section, `Connecting to the Database`_.
+#. Following the completion of the clone operation, you can connect to the clone instance as described in the previous section, :ref:`Connecting to the Database`.
 
    .. figure:: images/23a2.png
 
@@ -123,7 +123,7 @@ The ability to easily refresh a cloned database using new data from the source d
 
    .. figure:: images/27c.png
 
-#. Select **Operations** from the dropdown menu to monitor the provisioning. This process should take approximately 5-10 minutes.
+#. Select **Operations** from the dropdown menu to monitor the provisioning. This process should take approximately 3-5 minutes.
 
 #. Once the **Log Catchup** job completes, select **Databases > Clones**, select the clone of your source database and click **Refresh**.
 

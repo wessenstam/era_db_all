@@ -58,7 +58,7 @@ In this lab you will leverage multiple pre-built Calm Blueprints to provision yo
    - Under **Subnets**, select **Primary**, **Secondary**, and click **Confirm**
    - Mark **Primary** as the default network by clicking the :fa:`star`
 
-   .. figure:: images/3.png
+   .. figure:: images/3a.png
 
 #. Click **Save & Configure Environment**.
 

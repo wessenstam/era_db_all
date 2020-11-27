@@ -4,7 +4,7 @@
 Deploying Oracle with Era
 -------------------------
 
-Each quarter, Oracle releases a grouping of patches referred to as a PSU. **In this lab you will walk through the deployment and patching of both Oracle and Grid software for an Oracle 19c database using Era.**
+In this lab we are gooing to deploy an Oracle Database server and Database using the earlier created Software Profile.
 
 Create Oracle Server with Era
 +++++++++++++++++++++++++++++
@@ -17,15 +17,17 @@ In this exercise you will deploy a fresh Oracle database using your *Initials*\ 
 
 #. In the **Provision a Database** wizard, fill out the following fields to configure the Database Server:
 
-   - **Engine** - Oracle
+   - **Oracle -> Single Instance Database**
    - **Database Server** - Create New Server
-   - **Database Server Name** - *Initials*\ _oracle_prod
+   - **Database Server VM Name** - *Initials*\_oracle_prod
    - **Description** - (Optional)
-   - **Software Profile** - *Initials*\ _ORACLE_19C
+   - **Nutanix Cluster** - EraCluster
+   - **Software Profile** - *Initials*\_ORACLE_19C
    - **Compute Profile** - ORACLE_SMALL
    - **Network Profile** - Primary_ORACLE_NETWORK
    - Select **Enable High Availability**
-   - **SYS ASM Password** - oracle
+   - **SYS ASM Password** - nutanix/4u
+   - **ASM Driver** - None
    - **SSH Public Key for Node Access** - Select **Text**
 
    ::
@@ -37,16 +39,17 @@ In this exercise you will deploy a fresh Oracle database using your *Initials*\ 
 
          By selecting Enable High Availability, Oracle Grid is configured as part of the deployment and Oracle Automatic Storage Management (ASM) is used for volume management. Without High Availability enabled, Linux LVM and file systems would be used for database storage. Grid and ASM are required for clustered Oracle RAC deployments.
 
-   .. figure:: images/4.png
+   .. figure:: images/4a.png
 
 #. Click **Next**, and fill out the following fields to configure the Database:
 
-   -  **Database Name** - *Initials*\ _proddb
-   -  **SID** - *Initials*\ prod
-   -  **SYS and SYSTEM Password** - Nutanix/4u
-   -  **Database Parameter Profile** - ORACLE_SMALL_PARAMS
+   - **Database Name** - *Initials*\_proddb
+   - **Description** - (Optional)
+   - **SID** - *Initials*\prod
+   - **SYS and SYSTEM Password** - Nutanix/4u
+   - **Database Parameter Profile** - ORACLE_SMALL_PARAMS
 
-   .. figure:: images/5.png
+   .. figure:: images/5a.png
 
    .. note::
 
@@ -66,10 +69,10 @@ In this exercise you will deploy a fresh Oracle database using your *Initials*\ 
    - **SLA** - DEFAULT_OOB_GOLD_SLA
    - **Schedule** - (Defaults)
 
-   .. figure:: images/6.png
+   .. figure:: images/6a.png
 
 #. Click **Provision** to begin creating your new database server VM and *Initials*\ **_proddb** database.
 
-#. Select **Operations** from the dropdown menu to monitor the provisioning. This process should take approximately 60 minutes (depending on your cluster configuration).
+#. Select **Operations** to monitor the provisioning. This process should take approximately 60 minutes (depending on your cluster configuration).
 
 #. Please proceed to the following exercises while the database is being provisioned.

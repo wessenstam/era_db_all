@@ -13,111 +13,28 @@ Whereas with a Nutanix cluster and Era, provisioning and protecting a database s
 Source MSSQL VM
 +++++++++++++++++++++
 
-#. Log in to your  *UserXX*\ **-MSSQLSourceVM** (**Cancel** Shutdown Event Tracker):
+#. Log in to your  *UserXX*\ **-MSSQLSourceVM** (**Cancel** Shutdown Event Tracker) using the **Launch Console** or RDP:
 
    - **Username** - Administrator
    - **Password** - Nutanix/4u
 
+   .. note::  This is assigned by the SE leading the Bootcamp
 
-  .. note::  This is assigned by the SE leading the Bootcamp
+#. Close the Server Manager
 
-#. Disable Windows Firewall for all.
+#. Disable Windows Firewall for all via the following process:
+
+   - Open a Administrative privileged command line
+   - Run the below command
+
+   ::
+
+      netsh advfirewall set allprofiles state off
 
 #. Open SQL Server Management Studio (SSMS), and **Connect** using Windows Authentication.
 
 #. Verify you can browse the **SampleDB**.
 
-..  Clone Source MSSQL VM
-  +++++++++++++++++++++
-
-  **In this lab you will deploy a Microsoft SQL Server VM, by cloning a source MSSQL VM. This VM will act as a master image to create a profile for deploying additional SQL VMs using Era.**
-
-  #. In **Prism Central**, select :fa:`bars` **> Virtual Infrastructure > VMs**.
-
-     .. figure:: images/1.png
-
-  #. Select the checkbox for **Win2016SQLSource**, and click **Actions > Clone**.
-
-  #. Fill out the following fields:
-
-     - **Number Of Clones** - 1
-     - **Name** - *Initials*-MSSQL
-     - **vCPU(s)** - 2
-     - **Number of Cores per vCPU** - 1
-     - **Memory** - 4 GiB
-
-     .. figure:: images/clone_mssql_source.png
-
-  #. Click **Save** to create the VM.
-
-  #. Select your VM and click **Actions > Power On**.
-
-  #. Log in to the VM (**Cancel** Shutdown Event Tracker):
-
-     - **Username** - Administrator
-     - **Password** - Nutanix/4u
-
-  #. Disable Windows Firewall for all.
-
-  #. Open SQL Server Managment Studio (SSMS), and **Connect** using Windows Authentication.
-
-  #. Verify you can browse the **SampleDB**.
-
-Exploring Era Resources
-+++++++++++++++++++++++
-
-Era is distributed as a virtual appliance that can be installed on either AHV or ESXi. For the purposes of conserving memory resources, a shared Era server has already been deployed on your cluster.
-
-.. note::
-
-   If you're interested, instructions for the brief installation of the Era appliance can be found `here <https://portal.nutanix.com/#/page/docs/details?targetId=Nutanix-Era-User-Guide-v12:era-era-installing-on-ahv-t.html>`_.
-
-#. In **Prism Central > VMs > List**, identify the IP address assigned to the **EraServer-\*** VM using the **IP Addresses** column.
-
-#. Open \https://*ERA-VM-IP:8443*/ in a new browser tab.
-
-#. Login using the following credentials:
-
-   - **Username** - admin
-   - **Password** - *<Cluster Password>*
-
-#. From the **Dashboard** dropdown, select **Administration**.
-
-#. Under **Cluster Details**, note that Era has already been configured for your assigned cluster.
-
-   .. figure:: images/6.png
-
-#. Select **Era Resources** from the left-hand menu.
-
-.. #. Review the configured Networks. If no Networks show under **VLANs Available for Network Profiles**, click **Add**. Select **Secondary** VLAN and click **Add**.
-
-   .. note::
-
-      Leave **Manage IP Address Pool** unchecked, as we will be leveraging the cluster's IPAM to manage addresses
-
-   .. figure:: images/era_networks_001.png
-
-#. From the dropdown menu, select **SLAs**.
-
-   .. figure:: images/7a.png
-
-   Era has five built-in SLAs (Gold, Silver, Bronze, Zero, and Brass). SLAs control how the database server is backed up. This can be with a combination of Continuous Protection, Daily, Weekly Monthly and Quarterly protection intervals.
-
-#. From the dropdown menu, select **Profiles**.
-
-   Profiles pre-define resources and configurations, making it simple to consistently provision environments and reduce configuration sprawl. For example, Compute Profiles specifiy the size of the database server, including details such as vCPUs, cores per vCPU, and memory.
-
-.. #. If you do not see any networks defined under **Network**, click **+ Create**.
-
-   .. figure:: images/8.png
-
-.. #. Fill out the following fields and click **Create**:
-
-   - **Engine** - Microsoft SQL Server
-   - **Name** - Primary-MSSQL-NETWORK
-   - **Public Service VLAN** - Secondary
-
-   .. figure:: images/9.png
 
 Registering Your MSSQL VM
 +++++++++++++++++++++++++
@@ -129,7 +46,7 @@ You must meet the following requirements before you register a SQL Server databa
 - A local user account or a domain user account with administrator privileges on the database server must be provided.
 - Windows account or the SQL login account provided must be a member of sysadmin role.
 - SQL Server instance must be running.
-- Database files must not exist in C:\ Drive.
+- Database files must not exist in C:\\ Drive.
 - Database must be in an online state.
 - Windows remote management (WinRM) must be enabled
 
@@ -137,13 +54,15 @@ You must meet the following requirements before you register a SQL Server databa
 
    Your *XYZ*\ **-MSSQL** VM meets all of these criteria.
 
+#. Open your Era instance via its IP address as found in the Prism UI via **https://<ERA-IP ADDRESS>**
+
 #. In **Era**, select **Database Servers** from the dropdown menu and **List** from the lefthand menu.
 
    .. figure:: images/11.png
 
 #. Click **+ Register** and fill out the following fields:
 
-   - **Engine** - Microsoft SQL Server
+   - **Microsoft SQL Server -> Single Node Server VM**
    - **IP Address or Name of VM** - *UserXX*\ **-MSSQLSourceVM**
    - **Windows Administrator Name** - Administrator
    - **Windows Administrator Password** - Nutanix/4u
@@ -155,7 +74,7 @@ You must meet the following requirements before you register a SQL Server databa
 
       If **Instance** does not automatically populate, disable the Windows Firewall in your *UserXX*\ **-MSSQLSourceVM** VM.
 
-   .. figure:: images/12.png
+   .. figure:: images/12a.png
 
    .. note::
 
@@ -165,7 +84,7 @@ You must meet the following requirements before you register a SQL Server databa
 
 #. Click **Register** to begin ingesting the Database Server into Era.
 
-#. Select **Operations** from the dropdown menu to monitor the registration. This process should take approximately 5 minutes.
+#. Select **Operations** to monitor the registration. This process should take approximately 5 minutes.
 
    .. figure:: images/13.png
 
@@ -184,18 +103,20 @@ Before additional SQL Server VMs can be provisioned, a Software Profile must fir
 
 #. Click **+ Create** and fill out the following fields:
 
-   - **Engine** - Microsoft SQL Server
+   - **Microsoft SQL Server**
    - **Name** - *Initials*\ _MSSQL_2016
    - **Description** - (Optional)
+   - **Software Profile Version Name** - AUTOPOPULATED
+   - **Software Profile Version Description** - (Optional)
    - **Database Server** - Select your registered *Initials*\ -MSSQL VM
 
-   .. figure:: images/15.png
+   .. figure:: images/15a.png
 
-#. Click **Create**.
+#. Click **Next** and fill out optionally the Notes, then click **Create**.
 
-#. Select **Operations** from the dropdown menu to monitor the registration. This process should take approximately 5 minutes.
+#. Select **Operations** to monitor the registration. This process should take approximately 5 minutes.
 
-   .. figure:: images/16.png
+   .. figure:: images/16a.png
 
    .. note::
 

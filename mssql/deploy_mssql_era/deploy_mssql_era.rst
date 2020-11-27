@@ -15,33 +15,30 @@ You've completed all the one time operations required to be able to provision an
 
 #. In **Era**, select **Databases** from the dropdown menu and **Sources** from the lefthand menu.
 
-#. Click **+ Provision > Single Node Database**.
+#. Click **+ Provision > Microsoft SQL Server -> Database**.
 
-   .. figure:: images/18.png
+   .. figure:: images/18a.png
 
 #. In the **Provision a Database** wizard, fill out the following fields to configure the Database Server:
 
-   - **Engine** - Microsoft SQL Server
    - **Database Server** - Create New Server
    - **Database Server Name** - *Initials*\ -MSSQL2
    - **Description** - (Optional)
+   - **Nutanix Cluster** - EraCluster
    - **Software Profile** - *Initials*\ _MSSQL_2016
    - **Compute Profile** - CUSTOM_EXTRA_SMALL
    - **Network Profile** - Primary_MSSQL_NETWORK
-   - **Database Time Zone** - Pacific Standard time
    - Select **Join Domain**
    - **Windows Domain Profile** - NTNXLAB
    - **Windows License Key** - (Leave Blank)
    - **Administrator Password** - Nutanix/4u
    - **Instance Name** - MSSQLSERVER
-   - **Server Collation** - Default
+   - **Server Collation** - Leave Default
    - **Database Parameter Profile** - DEFAULT_SQLSERVER_INSTANCE_PARAMS
-   - **SQL Service Startup Account** - ntnxlab.local\\Administrator
-   - **SQL Service Startup Account Password** - nutanix/4u
    - **SQL Server Authentication Mode** - Windows Authentication
    - **Domain User Account** - (Leave Blank)
 
-   .. figure:: images/19a.png
+   .. figure:: images/19b.png
 
    .. note::
 
@@ -56,14 +53,25 @@ You've completed all the one time operations required to be able to provision an
 
       **Database Parameter Profiles** define the minimum server memory SQL Server should start with, as well as the maximum amount of memory SQL server will use. By default, it is set high enough that SQL Server can use all available server memory. You can also enable contained databases feature which will isolate the database from others on the instance for authentication.
 
+      **Windows Domain profile** defines the needed parameters for:
+      
+      - The domain to join (FQDN)
+      - Specific OUs for the Cluster or Database server
+      - Credentials for joining the Domain
+      - SQL Service Startup Account
+      - Era Worker Service Account
+
+      .. figure:: images/19c.png
+
 #. Click **Next**, and fill out the following fields to configure the Database:
 
    - **Database Name** - *Initials*\ -fiesta
    - **Description** - (Optional)
    - **Size (GiB)** - 200 (Default)
    - **Database Parameter Profile** - DEFAULT_SQLSERVER_DATABASE_PARAMS
+   - **Database Collation** - Leave Default
 
-   .. figure:: images/20.png
+   .. figure:: images/20a.png
 
    .. note::
 
@@ -87,11 +95,11 @@ You've completed all the one time operations required to be able to provision an
    - **SLA** - DEFAULT_OOB_BRONZE_SLA
    - **Schedule** - (Defaults)
 
-   .. figure:: images/21.png
+   .. figure:: images/21a.png
 
 #. Click **Provision** to begin creating your new database server VM and **fiesta** database.
 
-#. Select **Operations** from the dropdown menu to monitor the provisioning. This process should take approximately 20 minutes.
+#. Select **Operations** to monitor the provisioning. This process should take approximately 25-30 minutes.
 
    .. figure:: images/22.png
 
@@ -109,15 +117,16 @@ You've completed all the one time operations required to be able to provision an
       - Use multiple TempDB data files, all the same size.
       - Use available hypervisor network control mechanisms (for example, VMware NIOC).
 
+#. Wait till Era has finished the deployment job before moving forward. The rest of this Lab is dependent on the MS SQL server to be deployed.
 
 Exploring the Provisioned DB Server
 ++++++++++++++++++++++++++++++++++++
 
 #. In **Prism Element > Storage > Table > Volume Groups**, locate the **ERA_**\ *Initials*\ **_MSSQL2_\** VG and observe the layout on the **Virtual Disk** tab. <What does this tell us?>
 
-   .. figure:: images/23.png
+   .. figure:: images/23a.png
 
-#. View the disk layout of your newly provisioned VM in Prism. <What are all of these disks and how is this different from the original VM we registered?>
+#. View the disk layout of your newly provisioned VM in Prism via **VM ->** *Initials*\**-MSSQL2 -> Update** . <What are all of these disks and how is this different from the original VM we registered?>
 
    .. figure:: images/24.png
 
@@ -137,7 +146,7 @@ In this exercise you will import data directly into your database from a backup 
 
 Another approach could involve adding your new Era database to an existing database cluster (AlwaysOn Availability Group) and having it replicate to your Era provisioned database. Application level synchronous or asynchronous replication (such as SQL Server AAG or Oracle RAC) can be used to provide Era benefits like cloning and Time Machine to databases whose production instances run on bare metal or non-Nutanix infrastructure.
 
-#. From your *Initials*\ **-MSSQL2** RDP session, launch **Microsoft SQL Server Management Studio** and click **Connect** to authenticate as the currently logged in user.
+#. From your *Initials*\ **-MSSQL2** RDP session, launch **Microsoft SQL Server Management Studio** via **Start -> Microsoft SQL Server Tools 18** and click **Connect** to authenticate as the currently logged in user.
 
    .. figure:: images/26.png
 
@@ -165,7 +174,7 @@ Another approach could involve adding your new Era database to an existing datab
 
    .. figure:: images/29.png
 
-#. In **Era > Time Machines**, select your *initials*\ **-fiesta_TM** Time Machine. Select **Actions > Log Catch Up > Yes** to ensure the imported data has been flushed to disk prior to the cloning operation in the next lab.
+#. In **Era > Time Machines**, select your *initials*\ **-fiesta_TM** Time Machine. Select **Actions > Log Catch Up > Yes** to ensure the imported data has been flushed to disk prior to the cloning operation in the next lab. The operation takes approximately 2-5 minutes.
 
 Provision Fiesta Web Tier
 +++++++++++++++++++++++++
@@ -173,7 +182,7 @@ Provision Fiesta Web Tier
 Manipulating data using **SQL Server Management Studio** is boring. In this section you'll deploy the web tier of the application and connect it to your production database.
 
 
-#. `Download the Fiesta Blueprint by right-clicking here <https://raw.githubusercontent.com/nutanixworkshops/EraWithMSSQL/master/deploy_mssql_era/FiestaNoDB.json>`_. This single-VM Blueprint is used to provision only the web tier portion of the application.
+#. Download the Fiesta Blueprint by right-clicking :download:`here <FiestaNoDB.json>` and save to your machine. This single-VM Blueprint is used to provision only the web tier portion of the application.
 
 
 #. From **Prism Central > Calm**, select **Blueprints** from the lefthand menu and click **Upload Blueprint**.
@@ -186,15 +195,17 @@ Manipulating data using **SQL Server Management Studio** is boring. In this sect
 
 #. Select *Initials*\ -Project as the Calm project and click **Upload**.
 
-   .. figure:: images/31.png
+   .. figure:: images/31a.png
 
-#. In order to launch the Blueprint you must first assign a network to the VM. Select the **NodeReact** Service, and in the **VM** Configuration menu on the right, select **Secondary** as the **NIC 1** network.
+#. In order to launch the Blueprint you must first assign a network to the VM. Select the **NodeReact** Service, and in the **VM** Configuration menu on the right, select **Secondary** as the **NIC 1** network and toick the **Dynamic** option.
 
-   .. figure:: images/32a.png
+   .. figure:: images/32b.png
 
-#. Click **Credentials** to define a private key used to authenticate to the CentOS VM that will be provisioned by the Blueprint.
+#. Click **Credentials** (at the top of the screen) to define a private key used to authenticate to the CentOS VM that will be provisioned by the Blueprint.
 
-#. Expand the **CENTOS** credential and use your preferred SSH key, or paste in the following value as the **SSH Private Key**:
+      .. figure:: images/32c.png
+
+#. Expand the **CENTOS** credential by clicking on the **Edit** text and use your preferred SSH key, or paste in the following value as the **SSH Private Key**:
 
    ::
 
@@ -233,18 +244,18 @@ Manipulating data using **SQL Server Management Studio** is boring. In this sect
 #. Click **Launch** and fill out the following fields:
 
    - **Name of the Application** - *Initials*\ -Fiesta
-   - **db_password** - nutanix/4u
-   - **db_name** - *Initials*\ -fiesta (as configured when you deployed through Era)
-   - **db_dialect** - mssql
-   - **db_domain_name** - ntnxlab.local
-   - **db_username** - Administrator
    - **db_host_address** - The IP of your *Initials*\ **-MSSQL2** VM
+   - **db_username** - Administrator
+   - **db_domain_name** - ntnxlab.local
+   - **db_dialect** - mssql
+   - **db_name** - *Initials*\ -fiesta (as configured when you deployed through Era)
+   - **db_password** - nutanix/4u
 
-   .. figure:: images/34.png
+   .. figure:: images/34a.png
 
 #. Click **Create**.
 
-#. Select the **Audit** tab to monitor the deployment. This process should take < 5 minutes.
+#. Select **Audit -> Create** to monitor the deployment. This process should take < 15 minutes.
 
    .. figure:: images/35.png
 

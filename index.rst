@@ -18,8 +18,6 @@
 
   postgress/era_provision_postgresdb/era_provision_postgresdb
   postgress/era_clone_postgresdb/era_clone_postgresdb
-  postgress/era_rest_api/era_rest_api
-  postgress/appendix/glossary
 
 .. toctree::
   :maxdepth: 2
@@ -39,11 +37,18 @@
   :hidden:
 
   mssql/deploy_mssql/deploy_mssql
-  mssql/admin_mssqldb/admin_mssqldb
   mssql/deploy_mssql_era/deploy_mssql_era
-  mssql/hammerdb/hammerdb
-  mssql/appendix/glossary
+  mssql/admin_mssqldb/admin_mssqldb
 
+
+.. toctree::
+  :maxdepth: 2
+  :caption: Optional Labs
+  :name: _optional_labs
+  :hidden:
+
+  mssql/hammerdb/hammerdb
+  era_rest_api/era_rest_api
 
 .. toctree::
   :maxdepth: 2
@@ -53,6 +58,7 @@
 
   tools_vms/windows_tools_vm
   tools_vms/linux_tools_vm
+  appendix/glossary
   
 
 .. _getting_started:
@@ -61,7 +67,7 @@
 Getting Started
 ---------------
 
-Welcome to the Databases: Era with Databases for NEEUR Bootcamp! This workbook accompanies an instructor-led session that introduces Nutanix technologies and many common management tasks.
+Welcome to the Databases: Era with Databases Bootcamp! This workbook accompanies an instructor-led session that introduces Nutanix technologies and many common management tasks.
 
 
 What's New
@@ -69,7 +75,7 @@ What's New
 
 - Workshop updated for the following software versions:
     - AOS 5.11.x / 5.15.x / 5.16.x / 5.17.x / 5.18.x
-    - PC 5.16.x
+    - PC 2020.9
 
 - Optional Lab Updates:
 
@@ -78,12 +84,29 @@ Agenda
 
 - Introductions
 - Lab Setup
-- Provisioning a DB
-- Cloning a DB
+- Postgress
+
+  - Provision a PostgresSQL Server
+  - Clone a PostgresSQL Server
+
+- Oracle
+
+  - Register an Oracle Server
+  - Deploy an Oracle Server
+  - Patch an Oracle Server
+  - Refresh a cloned Oracle Server 
+
+- Microsoft SQL Server
+
+  - Register a MS SQl Server
+  - Deploy a MS SQL Server with Era
+  - Refresh a cloned MS SQL Database
+
 
 Optional labs:
 
-- Era API Explorer (Only for Oracel and Postgress)
+- Era API Explorer (Only for Oracle and Postgress)
+- MS SQL Server Performance testing using HammerDB in relation to the MS SQL Best Practices Guide
 
 Introductions
 +++++++++++++
